@@ -1,45 +1,76 @@
-//leaflet maps
+//heatmap or cloropleth map for homepage//of all plant origin locations
 
-//heatmap or cloropleth map for homepage 
-//of all plant origin locations
+
 
 
 
 
 //for each plant page, highlight country/countries of origin
 
-//need geojson with all country polygon shapes
 
-
-    //match plant info with correct country
-
-    //add country to array
-
-// Create a layer group from array
-let originLayer = L.layerGroup(originArray);
-
-// Create background tile layer
-let street = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-});
-
-
-// Create a baseMaps object to hold the streetmap layer.
-var baseMaps = {
-    "Street": street
-    };
-  
-    // Create an overlayMaps object to hold the bikeStations layer.
-    var overlayMaps = {
-      "Bike Stations": stationLayer
-    };
-  
-    // Create the map object with options. with these coordinates [40.73, -74.0059]
-    let myMap = L.map("map-id", {
-    center: [40.73, -74.0059], //
-    zoom: 11, //
-    layers: [street, stationLayer] //
+async function originMap () {
+    // Create the map object
+    let myMap = L.map("map", {
+        center: [40.73, -74.0059], //************** */
+        zoom: 5, 
     });
-  
-    // Create a layer control, and pass it baseMaps and overlayMaps. Add the layer control to the map.
-    L.control.layers(baseMaps, overlayMaps).addTo(myMap);
+
+    // Create background tile layer
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(myMap);
+
+    //*************************************************** */
+    //need geojson with all country polygon shapes
+    const response = await fetch("countries.geojson"); 
+    const data = await response.json();
+
+    console.log(data);
+    let countries = data.features;
+
+    for (let index = 0; index < countries.length; index++) {
+        L.polygon(countries[index].geometry.coordinates, {
+            color: "yellow", 
+            weight: 4,
+            fillColor: "yellow",
+            fillOpacity: 0
+            }
+        ).addTo(myMap)
+    };
+
+    // data.features[1] //each country
+    //     data.features[i].geometry.coordinates//polygon of country
+    //     data.features[i].properties.ADMIN //country name
+
+    //import plant origin data 
+    // const response = await fetch(""); //from where?
+    // const data = await response.json();
+    //*************************************************** */
+    //OR pass function the dictionary/data package?
+
+
+    //*************************************************** */
+    //transform data as needed to have country/countries of origin listed
+
+    const plant = ['Bangladesh', 'Bhutan', 'India', 'Maldives', 'Nepal', 'Pakistan', 'Sri Lanka'];
+
+    // // Loop through plant origin countries
+    // for (let index = 0; index < plant.length; index++) {
+        
+    //     //match plant info with correct country
+    //     if (plant[index] === countries[index].properties.ADMIN) {
+    //         //*************************************************** */
+    //         //add country polygon to map
+    //         L.polygon(countries[index].geometry.coordinates, {
+    //             color: "yellow", 
+    //             weight: 4,
+    //             fillColor: "yellow",
+    //             fillOpacity: 0
+    //         }).addTo(myMap);
+    //     };
+       
+    // };
+
+};
+
+originMap();
