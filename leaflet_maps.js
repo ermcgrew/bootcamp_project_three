@@ -7,40 +7,10 @@
 
 //for each plant page, highlight country/countries of origin
 
-
 async function originMap () {
-    // Create the map object
-    let myMap = L.map("map", {
-        center: [40.73, -74.0059], //************** */
-        zoom: 5, 
-    });
-
-    // Create background tile layer
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(myMap);
-
-    //*************************************************** */
-    //need geojson with all country polygon shapes
+    //load geojson with all country shapes
     const response = await fetch("countries.geojson"); 
     const data = await response.json();
-
-    console.log(data);
-    let countries = data.features;
-
-    for (let index = 0; index < countries.length; index++) {
-        L.polygon(countries[index].geometry.coordinates, {
-            color: "yellow", 
-            weight: 4,
-            fillColor: "yellow",
-            fillOpacity: 0
-            }
-        ).addTo(myMap)
-    };
-
-    // data.features[1] //each country
-    //     data.features[i].geometry.coordinates//polygon of country
-    //     data.features[i].properties.ADMIN //country name
 
     //import plant origin data 
     // const response = await fetch(""); //from where?
@@ -54,22 +24,36 @@ async function originMap () {
 
     const plant = ['Bangladesh', 'Bhutan', 'India', 'Maldives', 'Nepal', 'Pakistan', 'Sri Lanka'];
 
-    // // Loop through plant origin countries
-    // for (let index = 0; index < plant.length; index++) {
+    let geojsonLayer = L.geoJSON()
+
+    let myStyle = {
+        color: "black", 
+        fillOpacity: 0
+    };
+
+    // Loop through plant origin countries
+    for (let index = 0; index < plant.length; index++) {
         
-    //     //match plant info with correct country
-    //     if (plant[index] === countries[index].properties.ADMIN) {
-    //         //*************************************************** */
-    //         //add country polygon to map
-    //         L.polygon(countries[index].geometry.coordinates, {
-    //             color: "yellow", 
-    //             weight: 4,
-    //             fillColor: "yellow",
-    //             fillOpacity: 0
-    //         }).addTo(myMap);
-    //     };
-       
-    // };
+        //match plant info with correct country
+        //data.features[i].properties.ADMIN //country name
+        if (plant[index] === data.features[index].properties.ADMIN) {
+            //*************************************************** */
+            //add country polygon to map
+            geojsonLayer.addData(data.features[index], {style: myStyle});      
+        };
+    };
+
+    // Create the map object
+    let myMap = L.map("map", {
+    center: [40.73, -74.0059], //************** */
+    zoom: 5,
+    layers: [geojsonLayer] 
+    });
+
+    // Create background tile layer
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(myMap);    
 
 };
 
