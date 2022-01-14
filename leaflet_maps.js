@@ -19,17 +19,36 @@ async function originMap () {
 
 
     //*************************************************** */
-    //transform data as needed to have country/countries of origin listed
+    //transform plant data so origin locations match endings with UN db
     //include exception for any weird origin names
+    let test_origin = 'Eastern Africa';
+
     //load country to region csv OR import from database as json
     // const response1 = await fetch("UNSD_country_to_regions.csv"); 
     // const data1 = await response1.json();
 
+    let test_json = [{country: "Kenya", 
+                    intermediateRegion: 'Eastern Africa', 
+                    subregion: "Sub-Saharan Africa", 
+                    region: "Africa"},
+                    {country: "Zimbabwe", 
+                    intermediateRegion: 'Eastern Africa', 
+                    subregion: "Sub-Saharan Africa", 
+                    region: "Africa"}];
+    
 
+    //declare array to hold list of origin countries
+    let country_list = [];
 
-    //test array of countries
-    const plant = ['Bangladesh', 'Bhutan', 'India', 'Maldives', 'Nepal', 'Pakistan', 'Sri Lanka'];
+    //loop through region list for match
+    for (let j = 0; j < test_json.length; j++) {
+        let current_country = test_json[j];
+        if (current_country.region === test_origin || current_country.subregion === test_origin || current_country.intermediateRegion === test_origin) {
+            country_list.push(current_country.country);
+        };
+    };
 
+    
     //declare empty geojson layer
     let geojsonLayer = L.geoJSON();
 
@@ -40,8 +59,8 @@ async function originMap () {
     };
 
     //match plant origin country with geojson country
-    for (let index = 0; index < plant.length; index++) {
-        let current_plant = plant[index];
+    for (let index = 0; index < country_list.length; index++) {
+        let current_plant = country_list[index];
         for(let i=0; i < data.features.length; i++) {
             if (current_plant === data.features[i].properties.ADMIN) {
                 //add country geojson to layer
