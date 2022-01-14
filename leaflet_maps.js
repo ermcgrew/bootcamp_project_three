@@ -6,29 +6,26 @@
 
 
 //for each plant page, highlight country/countries of origin
-
 async function originMap () {
     //load geojson with all country shapes
     const response = await fetch("countries.geojson"); 
     const data = await response.json();
 
 
-    // //load country to region csv
-    // const response1 = await fetch("UNSD_country_to_regions.csv"); 
-    // const data1 = await response1.json();
-
-    // console.log(data1);
-
-    //import plant origin data 
-    // const response = await fetch(""); //****** */
-    // const data   = await response.json();
     //*************************************************** */
-    //OR pass function the dictionary/data package?
+    //import plant origin data OR pass function the dictionary/data package?
+    // const plant_response = await fetch("");
+    // const plant_data = await plant_response.json();    
 
 
     //*************************************************** */
     //transform data as needed to have country/countries of origin listed
     //include exception for any weird origin names
+    //load country to region csv OR import from database as json
+    // const response1 = await fetch("UNSD_country_to_regions.csv"); 
+    // const data1 = await response1.json();
+
+
 
     //test array of countries
     const plant = ['Bangladesh', 'Bhutan', 'India', 'Maldives', 'Nepal', 'Pakistan', 'Sri Lanka'];
@@ -42,18 +39,16 @@ async function originMap () {
         fillOpacity: 0
     };
 
-    // Loop through plant origin data
+    //match plant origin country with geojson country
     for (let index = 0; index < plant.length; index++) {
-        
-        //match plant origin with correct country
-        //data.features[i].properties.ADMIN //country name
-        if (plant[index] === data.features[index].properties.ADMIN) {///this is wrong
-            
-            //add country geojson to layer
-            geojsonLayer.addData(data.features[index], {style: myStyle});      
-        };
+        let current_plant = plant[index];
+        for(let i=0; i < data.features.length; i++) {
+            if (current_plant === data.features[i].properties.ADMIN) {
+                //add country geojson to layer
+                geojsonLayer.addData(data.features[i], {style: myStyle});      
+            };
+        }
     };
-
 
     // Create the map object
     let myMap = L.map("map", {
