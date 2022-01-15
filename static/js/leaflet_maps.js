@@ -7,8 +7,9 @@
 
 //for each plant page, highlight country/countries of origin
 async function originMap () {
+    console.log('connecting to js file')
     //load geojson with all country shapes
-    const response = await fetch("countries.geojson"); 
+    const response = await fetch("static/data/countries.geojson"); 
     const data = await response.json();
 
 
