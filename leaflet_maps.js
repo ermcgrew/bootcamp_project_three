@@ -43,12 +43,14 @@ async function originMap () {
     //loop through region list for match
     for (let j = 0; j < test_json.length; j++) {
         let current_country = test_json[j];
-        if (current_country.region === test_origin || current_country.subregion === test_origin || current_country.intermediateRegion === test_origin) {
+        if (current_country.region === test_origin 
+            || current_country.subregion === test_origin 
+            || current_country.intermediateRegion === test_origin) {
             country_list.push(current_country.country);
         };
     };
 
-    
+
     //declare empty geojson layer
     let geojsonLayer = L.geoJSON();
 
