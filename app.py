@@ -31,15 +31,18 @@ def index():
 @app.route("/search_by_plant")
 def by_plant():
     #call to database, pass returned json to html
+
+    
     return render_template('by_plant.html')
 
+#to populate dropdown
 @app.route("/plant_list")
 def plant_list():
     #connect to db, query, and close connection
     session = Session(engine)
     results = session.query(Countries.country).all()
     session.close()
-    
+
     total_plant_list = list(np.ravel(results))
     return jsonify(total_plant_list)
 

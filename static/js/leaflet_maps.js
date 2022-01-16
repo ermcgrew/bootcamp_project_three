@@ -27,7 +27,7 @@ async function main() {
     }; 
     
     //initial page load: graphs and metadata of first sample
-    displaySample(0);
+    plantChange(0);
 };
 
 //call main function for initial page load
