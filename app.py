@@ -1,6 +1,7 @@
 #Imports
 from flask import Flask, jsonify, render_template
 
+import numpy as np
 
 import sqlalchemy
 from sqlalchemy.ext.automap import automap_base
@@ -29,7 +30,18 @@ def index():
 #plant page
 @app.route("/search_by_plant")
 def by_plant():
+    #call to database, pass returned json to html
     return render_template('by_plant.html')
+
+@app.route("/plant_list")
+def plant_list():
+    #connect to db, query, and close connection
+    session = Session(engine)
+    results = session.query(Countries.country).all()
+    session.close()
+    
+    total_plant_list = list(np.ravel(results))
+    return jsonify(total_plant_list)
 
 
 if __name__ == "__main__":

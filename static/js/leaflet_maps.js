@@ -1,20 +1,24 @@
 
 async function main() {
 
-    //load data from json file
-    const response = await fetch("./samples.json"); //fetch all plant names from database
+    //load data from database
+    const response = await fetch("http://127.0.0.1:5000/plant_list"); //************** returns plant name list from database
+    //would need to have a route to connect to db 
     const data = await response.json();
 
+    console.log(data)
+
     //populate drop-down with sample ID names
-    let names = Object.values(data.names); 
-    for (i=0; i<names.length; i++) {
+    // let names = Object.values(data.names); 
+
+    for (i=0; i<data.length; i++) {
         //set create methods as variables (have to do this inside the loop)
         const newOption = document.createElement('option');
         const attributeVal = document.createAttribute('value');
         
         //set display text and value to sample id name
-        newOption.textContent = names[i];
-        attributeVal.value = names[i];
+        newOption.textContent = data[i];
+        attributeVal.value = data[i];
         
         //add newOption
         document.querySelector("#selDataset").append(newOption);
