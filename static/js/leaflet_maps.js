@@ -1,56 +1,77 @@
-//heatmap or cloropleth map for homepage//of all plant origin locations
+
+async function main() {
+
+    //load data from json file
+    const response = await fetch("./samples.json"); //fetch all plant names from database
+    const data = await response.json();
+
+    //populate drop-down with sample ID names
+    let names = Object.values(data.names); 
+    for (i=0; i<names.length; i++) {
+        //set create methods as variables (have to do this inside the loop)
+        const newOption = document.createElement('option');
+        const attributeVal = document.createAttribute('value');
+        
+        //set display text and value to sample id name
+        newOption.textContent = names[i];
+        attributeVal.value = names[i];
+        
+        //add newOption
+        document.querySelector("#selDataset").append(newOption);
+        //add value attribute 
+        newOption.setAttributeNode(attributeVal);
+    }; 
+    
+    //initial page load: graphs and metadata of first sample
+    displaySample(0);
+};
+
+//call main function for initial page load
+main();
+
+//function for loading new info for selected plant
+async function plantChange(array) {
+    //call to database?
+    
+    //code to populate data panel, photo here
+
+
+    //array of country names to pass to originMap function
+    let country_list = array[3];
+
+    //creates map
+    originMap(country_list)
+};
 
 
 
-
-
-
-//for each plant page, highlight country/countries of origin
-async function originMap () {
-    console.log('connecting to js file')
+//function to load geojson and display countries of origin
+async function originMap (country_list) { 
+    
     //load geojson with all country shapes
     const response = await fetch("static/data/countries.geojson"); 
     const data = await response.json();
 
-
-    //*************************************************** */
-    //import plant origin data OR pass function the dictionary/data package?
-    // const plant_response = await fetch("");
-    // const plant_data = await plant_response.json();    
-
-
-    //*************************************************** */
-    //transform plant data so origin locations match endings with UN db
-    //include exception for any weird origin names
-    let test_origin = 'Eastern Africa';
-
-    //load country to region csv OR import from database as json
-    // const response1 = await fetch("UNSD_country_to_regions.csv"); 
-    // const data1 = await response1.json();
-
-    let test_json = [{country: "Kenya", 
-                    intermediateRegion: 'Eastern Africa', 
-                    subregion: "Sub-Saharan Africa", 
-                    region: "Africa"},
-                    {country: "Zimbabwe", 
-                    intermediateRegion: 'Eastern Africa', 
-                    subregion: "Sub-Saharan Africa", 
-                    region: "Africa"}];
-    
-
-    //declare array to hold list of origin countries
-    let country_list = [];
-
-    //loop through region list for match
-    for (let j = 0; j < test_json.length; j++) {
-        let current_country = test_json[j];
-        if (current_country.region === test_origin 
-            || current_country.subregion === test_origin 
-            || current_country.intermediateRegion === test_origin) {
-            country_list.push(current_country.country);
-        };
-    };
-
+    // let test_origin = 'Eastern Africa';
+    // let test_json = [{country: "Kenya", 
+    //                 intermediateRegion: 'Eastern Africa', 
+    //                 subregion: "Sub-Saharan Africa", 
+    //                 region: "Africa"},
+    //                 {country: "Zimbabwe", 
+    //                 intermediateRegion: 'Eastern Africa', 
+    //                 subregion: "Sub-Saharan Africa", 
+    //                 region: "Africa"}];
+    // //declare array to hold list of origin countries
+    // let country_list = [];
+    // //loop through region list for match
+    // for (let j = 0; j < test_json.length; j++) {
+    //     let current_country = test_json[j];
+    //     if (current_country.region === test_origin 
+    //         || current_country.subregion === test_origin 
+    //         || current_country.intermediateRegion === test_origin) {
+    //         country_list.push(current_country.country);
+    //     };
+    // };
 
     //declare empty geojson layer
     let geojsonLayer = L.geoJSON();
@@ -61,11 +82,11 @@ async function originMap () {
         fillOpacity: 0
     };
 
-    //match plant origin country with geojson country
+    //match origin country with geojson country
     for (let index = 0; index < country_list.length; index++) {
-        let current_plant = country_list[index];
+        let current_country = country_list[index];
         for(let i=0; i < data.features.length; i++) {
-            if (current_plant === data.features[i].properties.ADMIN) {
+            if (current_country === data.features[i].properties.ADMIN) {
                 //add country geojson to layer
                 geojsonLayer.addData(data.features[i], {style: myStyle});      
             };
@@ -85,5 +106,3 @@ async function originMap () {
     }).addTo(myMap);    
 
 };
-
-originMap();

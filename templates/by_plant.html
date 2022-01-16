@@ -5,6 +5,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+
   <title>Origin of Plant</title>
 
   <!-- Leaflet CSS -->
@@ -17,7 +21,51 @@
 </head>
 
 <body>
+  <!-- Navbar, bootstrap, see web design challenge -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">Houseplants Home</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
+      <ul class="navbar-nav">
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-expanded="false">
+              Visualizations
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <a class="dropdown-item" href="#">Max Temperature</a>
+              <a class="dropdown-item" href="#">Humidity</a>
+              <a class="dropdown-item" href="#">Cloudiness</a>
+              <a class="dropdown-item" href="#">Wind speed</a>
+            </div>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Comparison</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Data</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  
 
+  <div class='container'>
+    <!-- dropdown-fill(link to js with code) onchange event listener--see web-visualization challenge -->
+    <div class="row">
+        <div class="col-md-2">
+          <div class="well">
+            <h5>Select a plant:</h5>
+            <select id="selDataset" onchange="optionChanged(this.value)"></select>
+          </div>
+
+    <!-- div for text/data panel  -->
+    
+    <!-- div for photo  -->
+  </div>
+  
+  
   <!-- The div that holds our map -->
   <div id="map"></div>
 

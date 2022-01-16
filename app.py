@@ -27,7 +27,7 @@ def index():
     return render_template('index.html')
 
 #plant page
-@app.route("/by_plant")
+@app.route("/search_by_plant")
 def by_plant():
     return render_template('by_plant.html')
 
