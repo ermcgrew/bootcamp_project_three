@@ -21,7 +21,7 @@ async function main() {
     }; 
     
     //initial page load 
-    plantChange("Sudan"); //*************************change defaul load */ 
+    plantChange("Sudan"); //*************************change default load */ 
 };
 
 //call main function for initial page load
