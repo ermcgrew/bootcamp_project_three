@@ -20,28 +20,29 @@ async function main() {
         newOption.setAttributeNode(attributeVal);
     }; 
     
-    // //initial page load: graphs and metadata of first sample
-    // plantChange(0);
+    //initial page load: graphs and metadata of first sample
+    // plantChange("Algeria");
 };
 
 //call main function for initial page load
 main();
 
 //function for loading new info for selected plant
-async function plantChange(array) {
-    //load plant name list from flask route that calls database
-    const response = await fetch("http://127.0.0.1:5000/plant_list"); //
+async function plantChange(plant) {
+    //load plant info from flask route that calls database
+    const response = await fetch(`/${plant}`); 
     //would need to have a route to connect to db 
     const data = await response.json();
+    console.log(data)
     
     //code to populate data panel, photo here
 
 
     //array of country names to pass to originMap function
-    let country_list = array[3];
+    // let country_list = plant[origin];
 
-    //creates map
-    originMap(country_list)
+    // //creates map
+    // originMap(country_list)
 };
 
 
