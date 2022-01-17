@@ -20,8 +20,8 @@ async function main() {
         newOption.setAttributeNode(attributeVal);
     }; 
     
-    //initial page load: graphs and metadata of first sample
-    plantChange("Sudan");
+    //initial page load 
+    plantChange("Sudan"); //*************************change defaul load */ 
 };
 
 //call main function for initial page load
@@ -49,11 +49,11 @@ async function plantChange(plant) {
     });
 
     //load photo
-
+    //target img tag
 
 
     //array of country names to pass to originMap function
-    let country_list = ['Kenya', 'Tanzania'];
+    let country_list = ['Kenya', 'Tanzania']; ////change this to correct part of plant json
     console.log(country_list)
 
     //creates map
