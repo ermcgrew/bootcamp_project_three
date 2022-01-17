@@ -1,5 +1,5 @@
 #Imports
-from flask import Flask, jsonify, render_template
+from flask import Flask, jsonify, request, render_template
 
 import numpy as np
 
@@ -16,7 +16,6 @@ Base = automap_base()
 Base.prepare(engine, reflect=True)
 Countries = Base.classes.countries 
 
-
 #Flask setup
 app = Flask(__name__)
 
@@ -30,21 +29,28 @@ def index():
 #plant page
 @app.route("/search_by_plant")
 def by_plant():
-    #call to database, pass returned json to html
-
-    
+   
     return render_template('by_plant.html')
 
-#to populate dropdown
-@app.route("/plant_list")
+# #to populate dropdown
+@app.route('/plant_list', methods=['GET', 'POST'])
 def plant_list():
-    #connect to db, query, and close connection
-    session = Session(engine)
-    results = session.query(Countries.country).all()
-    session.close()
+    # GET request
+    if request.method == 'GET':
+        #query db for plant list
+        session = Session(engine)
+        results = session.query(Countries.country).all()
+        session.close()
 
-    total_plant_list = list(np.ravel(results))
-    return jsonify(total_plant_list)
+        #plant list as array
+        total_plant_list = list(np.ravel(results))
+
+        return jsonify(total_plant_list)  
+        
+    # POST request
+    if request.method == 'POST':
+        print(request.get_json())
+        return 'Sucesss', 200
 
 
 if __name__ == "__main__":

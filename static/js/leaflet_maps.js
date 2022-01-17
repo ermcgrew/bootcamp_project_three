@@ -1,16 +1,10 @@
 
 async function main() {
-
-    //load data from database
-    const response = await fetch("http://127.0.0.1:5000/plant_list"); //************** returns plant name list from database
-    //would need to have a route to connect to db 
-    const data = await response.json();
-
-    console.log(data)
+    //load plant name list from flask route that calls database
+    let response = await fetch('/plant_list');
+    let data = await response.json();
 
     //populate drop-down with sample ID names
-    // let names = Object.values(data.names); 
-
     for (i=0; i<data.length; i++) {
         //set create methods as variables (have to do this inside the loop)
         const newOption = document.createElement('option');
@@ -26,8 +20,8 @@ async function main() {
         newOption.setAttributeNode(attributeVal);
     }; 
     
-    //initial page load: graphs and metadata of first sample
-    plantChange(0);
+    // //initial page load: graphs and metadata of first sample
+    // plantChange(0);
 };
 
 //call main function for initial page load
@@ -35,7 +29,10 @@ main();
 
 //function for loading new info for selected plant
 async function plantChange(array) {
-    //call to database?
+    //load plant name list from flask route that calls database
+    const response = await fetch("http://127.0.0.1:5000/plant_list"); //
+    //would need to have a route to connect to db 
+    const data = await response.json();
     
     //code to populate data panel, photo here
 

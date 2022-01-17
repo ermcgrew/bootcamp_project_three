@@ -59,23 +59,26 @@
             <h5>Select a plant:</h5>
             <select id="selDataset" onchange="plantChange(this.value)"></select>
           </div>
+        </div>
+        <div class="col-md-10">
+          <!--text/data panel  -->
+          <!-- photo  -->
+        </div>
+    </div>
 
-    <!-- div for text/data panel  -->
-    
-    <!-- div for photo  -->
+    <!-- map -->
+    <div id="map"></div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+      integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+      crossorigin=""></script>
+
+    <!-- Our JavaScript -->
+    <script type="text/javascript" src="../static/js/leaflet_maps.js"></script>
+      
   </div>
-  
-  
-  <!-- map -->
-  <div id="map"></div>
 
-  <!-- Leaflet JS -->
-  <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
-    integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
-    crossorigin=""></script>
-
-  <!-- Our JavaScript -->
-  <script type="text/javascript" src="../static/js/leaflet_maps.js"></script>
 </body>
 
 </html>
