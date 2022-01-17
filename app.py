@@ -37,7 +37,7 @@ def search():
 @app.route("/<plant>", methods=['GET', 'POST'])
 def by_plant(plant):
     
-    if request.method == 'GET':
+    # if request.method == 'GET':
         session = Session(engine)
         results = session.query(Countries.country).filter(Countries.country == plant).all()
         session.close()
@@ -46,16 +46,16 @@ def by_plant(plant):
 
         return jsonify(plant_to_load)
     
-    # POST request
-    if request.method == 'POST':
-        print(request.get_json())
-        return 'Sucesss', 200
+    # # POST request
+    # if request.method == 'POST':
+    #     print(request.get_json())
+    #     return 'Sucesss', 200
 
 # #to populate dropdown
 @app.route('/plant_list', methods=['GET', 'POST'])
 def plant_list():
     # GET request
-    if request.method == 'GET':
+    # if request.method == 'GET':
         #query db for plant list
         session = Session(engine)
         results = session.query(Countries.country).all()
@@ -66,10 +66,10 @@ def plant_list():
 
         return jsonify(total_plant_list)  
         
-    # POST request
-    if request.method == 'POST':
-        print(request.get_json())
-        return 'Sucesss', 200
+    # # POST request
+    # if request.method == 'POST':
+    #     print(request.get_json())
+    #     return 'Sucesss', 200
 
 
 if __name__ == "__main__":

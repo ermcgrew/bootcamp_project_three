@@ -21,7 +21,7 @@ async function main() {
     }; 
     
     //initial page load: graphs and metadata of first sample
-    // plantChange("Algeria");
+    plantChange("Sudan");
 };
 
 //call main function for initial page load
@@ -33,23 +33,38 @@ async function plantChange(plant) {
     const response = await fetch(`/${plant}`); 
     //would need to have a route to connect to db 
     const data = await response.json();
-    console.log(data)
-    
-    //code to populate data panel, photo here
+    // console.log(data)
+
+    //populate data panel--first remove old
+    let oldMeta = document.querySelectorAll('#meta');
+    for (let i=0;i<oldMeta.length;i++) {
+        oldMeta[i].remove();
+    };
+    //load current plant info
+    data.map(item => {
+        let newP = document.createElement('p');
+        newP.textContent = item;
+        newP.id = "meta";
+        document.querySelector('.panel-body').appendChild(newP);
+    });
+
+    //load photo
+
 
 
     //array of country names to pass to originMap function
-    // let country_list = plant[origin];
+    let country_list = ['Kenya', 'Tanzania'];
+    console.log(country_list)
 
-    // //creates map
-    // originMap(country_list)
+    //creates map
+    originMap(country_list)
 };
 
 
 
 //function to load geojson and display countries of origin
 async function originMap (country_list) { 
-    
+    console.log(country_list);
     //load geojson with all country shapes
     const response = await fetch("static/data/countries.geojson"); 
     const data = await response.json();
@@ -98,7 +113,7 @@ async function originMap (country_list) {
     // Create the map object
     let myMap = L.map("map", {
     center: [35.9375, 14.3754],
-    zoom: 3,
+    zoom: 2,
     layers: [geojsonLayer] 
     });
 
