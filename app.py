@@ -41,7 +41,7 @@ def by_plant(plant):
 
     #Convert the query results to a dictionary
     dict = {}
-    # dict["id"] = results.id
+    dict["id"] = results.id
     dict["common_name"] = results.common_name
     dict["scientific_name"] = results.scientific_name
     dict["growth"] = results.max_growth
