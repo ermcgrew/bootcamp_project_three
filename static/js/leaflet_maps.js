@@ -4,8 +4,6 @@ async function main() {
     let response = await fetch('/plant_list');
     let data = await response.json();
 
-    console.log(data)
-
     //populate drop-down with sample ID names
     for (i=0; i<data.length; i++) {
         //set create methods as variables (have to do this inside the loop)
@@ -22,8 +20,8 @@ async function main() {
         newOption.setAttributeNode(attributeVal);
     }; 
     
-    // //initial page load 
-    // plantChange("Sudan"); //*************************change default load */ 
+    //initial page load with first item in list
+    plantChange("Amaryllis");
 };
 
 //call main function for initial page load
@@ -37,28 +35,29 @@ async function plantChange(plant) {
     const data = await response.json();
     console.log(data)
 
+    let panel_info = data.common_name
+
     //populate data panel--first remove old
     let oldMeta = document.querySelectorAll('#meta');
     for (let i=0;i<oldMeta.length;i++) {
         oldMeta[i].remove();
     };
     //load current plant info
-    data.map(item => {
-        let newP = document.createElement('p');
-        newP.textContent = item;
-        newP.id = "meta";
-        document.querySelector('.panel-body').appendChild(newP);
-    });
+    // panel_info.map(item => {
+    //     let newP = document.createElement('p');
+    //     newP.textContent = item;
+    //     newP.id = "meta";
+    //     document.querySelector('.panel-body').appendChild(newP);
+    // });
 
     //load photo
     //target img tag
 
 
-    //array of country names to pass to originMap function
-    let country_list = ['Kenya', 'Tanzania']; ////change this to correct part of plant json
-    console.log(country_list)
+  
 
-    //creates map
+    //convert country string to array of country names to pass to originMap function
+    let country_list = (data.origins).split(", ")
     originMap(country_list)
 };
 
@@ -66,31 +65,9 @@ async function plantChange(plant) {
 
 //function to load geojson and display countries of origin
 async function originMap (country_list) { 
-    console.log(country_list);
     //load geojson with all country shapes
     const response = await fetch("static/data/countries.geojson"); 
     const data = await response.json();
-
-    // let test_origin = 'Eastern Africa';
-    // let test_json = [{country: "Kenya", 
-    //                 intermediateRegion: 'Eastern Africa', 
-    //                 subregion: "Sub-Saharan Africa", 
-    //                 region: "Africa"},
-    //                 {country: "Zimbabwe", 
-    //                 intermediateRegion: 'Eastern Africa', 
-    //                 subregion: "Sub-Saharan Africa", 
-    //                 region: "Africa"}];
-    // //declare array to hold list of origin countries
-    // let country_list = [];
-    // //loop through region list for match
-    // for (let j = 0; j < test_json.length; j++) {
-    //     let current_country = test_json[j];
-    //     if (current_country.region === test_origin 
-    //         || current_country.subregion === test_origin 
-    //         || current_country.intermediateRegion === test_origin) {
-    //         country_list.push(current_country.country);
-    //     };
-    // };
 
     //declare empty geojson layer
     let geojsonLayer = L.geoJSON();

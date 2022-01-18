@@ -36,14 +36,21 @@ def search():
 @app.route("/<plant>")
 def by_plant(plant):
     session = Session(engine)
-    results = session.query(Houseplants.common_name, Houseplants.scientific_name).filter(Houseplants.common_name == plant).all()
-    print(plant, "space?")
-    print("these are the results: ", results)
+    results = session.query(Houseplants).filter(Houseplants.common_name == plant).first()
     session.close()
 
-    plant_to_load = list(np.ravel(results))
+    #Convert the query results to a dictionary
+    dict = {}
+    # dict["id"] = results.id
+    dict["common_name"] = results.common_name
+    dict["scientific_name"] = results.scientific_name
+    dict["growth"] = results.max_growth
+    dict["poisonous"] = results.poisonous
+    dict["image_url"] = results.photo_url
+    dict["temperatures"] = results.temperature
+    dict["origins"] = results.origin_countries
 
-    return jsonify(plant_to_load)
+    return jsonify(dict)
 
 #to populate dropdown
 @app.route('/plant_list')
