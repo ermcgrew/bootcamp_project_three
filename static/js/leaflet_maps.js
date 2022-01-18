@@ -4,6 +4,8 @@ async function main() {
     let response = await fetch('/plant_list');
     let data = await response.json();
 
+    console.log(data)
+
     //populate drop-down with sample ID names
     for (i=0; i<data.length; i++) {
         //set create methods as variables (have to do this inside the loop)
@@ -20,8 +22,8 @@ async function main() {
         newOption.setAttributeNode(attributeVal);
     }; 
     
-    //initial page load 
-    plantChange("Sudan"); //*************************change default load */ 
+    // //initial page load 
+    // plantChange("Sudan"); //*************************change default load */ 
 };
 
 //call main function for initial page load
@@ -33,7 +35,7 @@ async function plantChange(plant) {
     const response = await fetch(`/${plant}`); 
     //would need to have a route to connect to db 
     const data = await response.json();
-    // console.log(data)
+    console.log(data)
 
     //populate data panel--first remove old
     let oldMeta = document.querySelectorAll('#meta');

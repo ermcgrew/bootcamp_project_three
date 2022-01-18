@@ -10,12 +10,12 @@ from sqlalchemy.orm import Session
 from sqlalchemy import create_engine, func
 
 #connect to database
-engine = create_engine("sqlite:///countries.sqlite")
+engine = create_engine("sqlite:///houseplants.sqlite")
 
-#reflect tables as classes and save references
+#reflect table as class and save reference
 Base = automap_base()
 Base.prepare(engine, reflect=True)
-Countries = Base.classes.countries 
+Houseplants = Base.classes.houseplants 
 
 #Flask setup
 app = Flask(__name__)
@@ -36,7 +36,9 @@ def search():
 @app.route("/<plant>")
 def by_plant(plant):
     session = Session(engine)
-    results = session.query(Countries.country).filter(Countries.country == plant).all()
+    results = session.query(Houseplants.common_name, Houseplants.scientific_name).filter(Houseplants.common_name == plant).all()
+    print(plant, "space?")
+    print("these are the results: ", results)
     session.close()
 
     plant_to_load = list(np.ravel(results))
@@ -47,7 +49,7 @@ def by_plant(plant):
 @app.route('/plant_list')
 def plant_list():
     session = Session(engine)
-    results = session.query(Countries.country).all()
+    results = session.query(Houseplants.common_name).all()
     session.close()
 
     #plant list as array
