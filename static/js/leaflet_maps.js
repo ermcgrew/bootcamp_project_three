@@ -31,30 +31,29 @@ main();
 async function plantChange(plant) {
     //load plant info from flask route that calls database
     const response = await fetch(`/${plant}`); 
-    //would need to have a route to connect to db 
     const data = await response.json();
-    console.log(data)
+   
+    // create list of info for table
+    let panel_info = [data.common_name, data.scientific_name, data.growth, data.temperatures, data.poisonous]
 
-    let panel_info = data.common_name
-
-    //populate data panel--first remove old
-    let oldMeta = document.querySelectorAll('#meta');
-    for (let i=0;i<oldMeta.length;i++) {
-        oldMeta[i].remove();
+    //remove old plant info
+    let oldInfo = document.querySelectorAll('#plantInfo');
+    for (let i=0;i<oldInfo.length;i++) {
+        oldInfo[i].textContent = '';
     };
+
     //load current plant info
-    // panel_info.map(item => {
-    //     let newP = document.createElement('p');
-    //     newP.textContent = item;
-    //     newP.id = "meta";
-    //     document.querySelector('.panel-body').appendChild(newP);
-    // });
+    let counter = 0
+    Array.from(document.querySelectorAll('td'))
+        .forEach(td => {
+            td.textContent = panel_info[counter]
+            td.id = 'plantInfo'
+            counter += 1    
+    });
 
-    //load photo
-    //target img tag
-
-
-  
+    //display photo
+    document.querySelector('img').setAttribute('src', data.image_url)
+    document.querySelector('figcaption').textContent = `Photo of ${data.common_name} from houseplantsexpert.com`
 
     //convert country string to array of country names to pass to originMap function
     let country_list = (data.origins).split(", ")
@@ -65,6 +64,8 @@ async function plantChange(plant) {
 
 //function to load geojson and display countries of origin
 async function originMap (country_list) { 
+    
+
     //load geojson with all country shapes
     const response = await fetch("static/data/countries.geojson"); 
     const data = await response.json();

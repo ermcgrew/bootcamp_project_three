@@ -39,16 +39,17 @@ def by_plant(plant):
     results = session.query(Houseplants).filter(Houseplants.common_name == plant).first()
     session.close()
 
-    #Convert the query results to a dictionary
-    dict = {}
-    dict["id"] = results.id
-    dict["common_name"] = results.common_name
-    dict["scientific_name"] = results.scientific_name
-    dict["growth"] = results.max_growth
-    dict["poisonous"] = results.poisonous
-    dict["image_url"] = results.photo_url
-    dict["temperatures"] = results.temperature
-    dict["origins"] = results.origin_countries
+    #Convert the query results to a dictionary  
+    dict = {
+        "id": results.id,
+        "common_name": results.common_name,
+        "scientific_name": results.scientific_name,
+        "growth": results.max_growth,
+        "poisonous": results.poisonous,
+        "image_url": results.photo_url,
+        "temperatures": results.temperature,
+        "origins": results.origin_countries
+        }
 
     return jsonify(dict)
 
