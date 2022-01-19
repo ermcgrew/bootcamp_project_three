@@ -19,27 +19,16 @@ async function main() {
         //add value attribute 
         newOption.setAttributeNode(attributeVal);
     }; 
-
-    // Create the map object
-    let myMap = L.map("map", {
-    center: [35.9375, 14.3754],
-    zoom: 2 
-    });
-
-    // Create background tile layer
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(myMap);  
     
     //initial page load with first item in list
-    plantChange("Amaryllis", myMap);
+    plantChange("Amaryllis");
 };
 
 //call main function for initial page load
 main();
 
 //function for loading new info for selected plant
-async function plantChange(plant, myMap) {
+async function plantChange(plant) {
     //load plant info from flask route that calls database
     const response = await fetch(`/${plant}`); 
     const data = await response.json();
@@ -69,76 +58,46 @@ async function plantChange(plant, myMap) {
     //convert country string to array of country names to pass to originMap function
     let country_list = (data.origins).split(", ")
     
-    
+    originMap(country_list);
+};
+
+
+//function to load geojson and display countries of origin
+async function originMap (country_list) { 
     //load geojson with all country shapes
-    const response1 = await fetch("static/data/countries.geojson"); 
-    const data1 = await response1.json();
-    
-    //declare empty geojson layer
-    let geojsonLayer = L.geoJSON();
+    const response = await fetch("static/data/countries.geojson"); 
+    const data = await response.json();
+
+    //remove geojson data from previous plant
+    geojsonLayer.clearLayers();
 
     //declare border style parameters
     let myStyle = {
         color: "black", 
         fillOpacity: 0
     };
+
     //match origin country with geojson country
     for (let index = 0; index < country_list.length; index++) {
         let current_country = country_list[index];
-        for(let i=0; i < data1.features.length; i++) {
-            if (current_country === data1.features[i].properties.ADMIN) {
+        for(let i=0; i < data.features.length; i++) {
+            if (current_country === data.features[i].properties.ADMIN) {
                 //add country geojson to layer
-                geojsonLayer.addData(data1.features[i], {style: myStyle}).addTo(myMap);      
+                geojsonLayer.addData(data.features[i], {style: myStyle}).addTo(myMap);      
             };
         }
     };
 
-   
-    
-
-
 };
 
+// Create the map object, tile layer, and geojson layer as global variables
+let myMap = L.map("map", {
+    center: [35.9375, 14.3754],
+    zoom: 2
+});
 
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(myMap);  
 
-//function to load geojson and display countries of origin
-// async function originMap (country_list) { 
-    
-
-//     //load geojson with all country shapes
-//     const response = await fetch("static/data/countries.geojson"); 
-//     const data = await response.json();
-
-//     //declare empty geojson layer
-//     let geojsonLayer = L.geoJSON();
-
-//     //declare border style parameters
-//     let myStyle = {
-//         color: "black", 
-//         fillOpacity: 0
-//     };
-
-//     //match origin country with geojson country
-//     for (let index = 0; index < country_list.length; index++) {
-//         let current_country = country_list[index];
-//         for(let i=0; i < data.features.length; i++) {
-//             if (current_country === data.features[i].properties.ADMIN) {
-//                 //add country geojson to layer
-//                 geojsonLayer.addData(data.features[i], {style: myStyle});      
-//             };
-//         }
-//     };
-
-//     // Create the map object
-//     let myMap = L.map("map", {
-//     center: [35.9375, 14.3754],
-//     zoom: 2,
-//     layers: [geojsonLayer] 
-//     });
-
-//     // Create background tile layer
-//     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-//         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-//     }).addTo(myMap);    
-
-// };
+let geojsonLayer = L.geoJSON();
