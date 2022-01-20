@@ -68,11 +68,11 @@ async function originMap (country_list) {
     const response = await fetch("static/data/countries.geojson"); 
     const data = await response.json();
 
-    //remove geojson data from previous plant
+    //remove geojson data from previous plant and closes any open popups
     geojsonLayer.clearLayers().closePopup();
 
     //reset zoom
-    myMap.setView([35.9375, 14.3754], 2);
+    myMap.setView([22.894, 14.025], 2);
 
     //match origin country with geojson country
     for (let index = 0; index < country_list.length; index++) {
@@ -89,7 +89,7 @@ async function originMap (country_list) {
 
 // Create the map object, tile layer, and geojson layer as global variables
 let myMap = L.map("map", {
-    center: [35.9375, 14.3754],
+    center: [22.894, 14.025],
     zoom: 2
 });
 
