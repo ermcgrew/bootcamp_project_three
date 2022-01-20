@@ -82,7 +82,7 @@ async function originMap (country_list) {
         let current_country = country_list[index];
         for(let i=0; i < data.features.length; i++) {
             if (current_country === data.features[i].properties.ADMIN) {
-                //add country geojson to layer
+                //add country geojson to layer and to map
                 geojsonLayer.addData(data.features[i], {style: myStyle}).addTo(myMap);      
             };
         }
