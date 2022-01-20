@@ -18,6 +18,8 @@
 
   <!-- Our CSS -->
   <link rel="stylesheet" type="text/css" href="../static/css/style.css">
+  <!-- prevents favicon.ico error -->
+  <link rel="icon" href="data:,">
 </head>
 
 <body>
@@ -29,22 +31,8 @@
     </button>
     <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
       <ul class="navbar-nav">
-        <!-- <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-expanded="false">
-              Visualizations
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-              <a class="dropdown-item" href="#">Max Temperature</a>
-              <a class="dropdown-item" href="#">Humidity</a>
-              <a class="dropdown-item" href="#">Cloudiness</a>
-              <a class="dropdown-item" href="#">Wind speed</a>
-            </div>
-        </li> -->
         <li class="nav-item">
           <a class="nav-link" href="/search_by_plant">Search by Plant</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Search by Region</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">Data</a>
@@ -64,22 +52,45 @@
             <select id="selDataset" onchange="plantChange(this.value)"></select>
           </div>
         </div>
-      </div>
+    </div>
         
     <div class="row">
-      <div class='col-md-4'>
+      <div class='col-md-6'>
         <!--text/data panel  -->
-        <div class="panel panel-primary">
-          <div class="panel-heading">
-            <h4 class="panel-title">Plant Info</h4>
+        <h4 class="panel-title">Quick Facts</h4>
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+              <tbody>
+                <tr>
+                  <th scope="row">Common Name</th>
+                  <td id='first'></td>
+                </tr>
+                <tr>
+                  <th scope="row">Scientific Name</th>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row">Growth Pattern</th>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row">Preferred Temperatures</th>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row">Toxicity</th>
+                  <td></td>
+                </tr>
+              </tbody>  
+            </table>
           </div>
-          <div id="sample-metadata" class="panel-body"></div>
-        </div>
       </div>  
-      <div class="col-md-8">
-        <figure>
+
+      <div class="col-md-6">
+        <figure class="figure">
           <!-- photo  -->
           <img src="" class="figure-img img-fluid" alt="featured photo of plant">
+          <figcaption class="figure-caption">A caption for the above image.</figcaption>
         </figure>
       </div>
     </div>
@@ -87,9 +98,9 @@
     
     <div class='row'>
       <div class='col-sm-12'>
-        <!-- map -->
-        <h4>Countries of Origin</h4>
-          <div id="map"></div>
+        <h4>Region/Countries of Origin</h4>
+        <!-- map -->  
+        <div id="map"></div>
       </div>
     </div>
     

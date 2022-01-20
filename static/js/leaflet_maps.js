@@ -20,8 +20,8 @@ async function main() {
         newOption.setAttributeNode(attributeVal);
     }; 
     
-    //initial page load 
-    plantChange("Sudan"); //*************************change default load */ 
+    //initial page load with first item in list
+    plantChange("Amaryllis");
 };
 
 //call main function for initial page load
@@ -31,67 +31,45 @@ main();
 async function plantChange(plant) {
     //load plant info from flask route that calls database
     const response = await fetch(`/${plant}`); 
-    //would need to have a route to connect to db 
     const data = await response.json();
-    // console.log(data)
+   
+    // create list of info for table
+    let panel_info = [data.common_name, data.scientific_name, data.growth, data.temperatures, data.poisonous]
 
-    //populate data panel--first remove old
-    let oldMeta = document.querySelectorAll('#meta');
-    for (let i=0;i<oldMeta.length;i++) {
-        oldMeta[i].remove();
+    //remove old plant info
+    let oldInfo = document.querySelectorAll('#plantInfo');
+    for (let i=0;i<oldInfo.length;i++) {
+        oldInfo[i].textContent = '';
     };
+
     //load current plant info
-    data.map(item => {
-        let newP = document.createElement('p');
-        newP.textContent = item;
-        newP.id = "meta";
-        document.querySelector('.panel-body').appendChild(newP);
+    let counter = 0
+    Array.from(document.querySelectorAll('td'))
+        .forEach(td => {
+            td.textContent = panel_info[counter]
+            td.id = 'plantInfo'
+            counter += 1    
     });
 
-    //load photo
-    //target img tag
+    //display photo
+    document.querySelector('img').setAttribute('src', data.image_url)
+    document.querySelector('figcaption').textContent = `Photo of ${data.common_name} from houseplantsexpert.com`
 
-
-    //array of country names to pass to originMap function
-    let country_list = ['Kenya', 'Tanzania']; ////change this to correct part of plant json
-    console.log(country_list)
-
-    //creates map
-    originMap(country_list)
+    //convert country string to array of country names to pass to originMap function
+    let country_list = (data.origins).split(", ")
+    
+    originMap(country_list);
 };
-
 
 
 //function to load geojson and display countries of origin
 async function originMap (country_list) { 
-    console.log(country_list);
     //load geojson with all country shapes
     const response = await fetch("static/data/countries.geojson"); 
     const data = await response.json();
 
-    // let test_origin = 'Eastern Africa';
-    // let test_json = [{country: "Kenya", 
-    //                 intermediateRegion: 'Eastern Africa', 
-    //                 subregion: "Sub-Saharan Africa", 
-    //                 region: "Africa"},
-    //                 {country: "Zimbabwe", 
-    //                 intermediateRegion: 'Eastern Africa', 
-    //                 subregion: "Sub-Saharan Africa", 
-    //                 region: "Africa"}];
-    // //declare array to hold list of origin countries
-    // let country_list = [];
-    // //loop through region list for match
-    // for (let j = 0; j < test_json.length; j++) {
-    //     let current_country = test_json[j];
-    //     if (current_country.region === test_origin 
-    //         || current_country.subregion === test_origin 
-    //         || current_country.intermediateRegion === test_origin) {
-    //         country_list.push(current_country.country);
-    //     };
-    // };
-
-    //declare empty geojson layer
-    let geojsonLayer = L.geoJSON();
+    //remove geojson data from previous plant
+    geojsonLayer.clearLayers();
 
     //declare border style parameters
     let myStyle = {
@@ -105,21 +83,21 @@ async function originMap (country_list) {
         for(let i=0; i < data.features.length; i++) {
             if (current_country === data.features[i].properties.ADMIN) {
                 //add country geojson to layer
-                geojsonLayer.addData(data.features[i], {style: myStyle});      
+                geojsonLayer.addData(data.features[i], {style: myStyle}).addTo(myMap);      
             };
         }
     };
 
-    // Create the map object
-    let myMap = L.map("map", {
-    center: [35.9375, 14.3754],
-    zoom: 2,
-    layers: [geojsonLayer] 
-    });
-
-    // Create background tile layer
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(myMap);    
-
 };
+
+// Create the map object, tile layer, and geojson layer as global variables
+let myMap = L.map("map", {
+    center: [35.9375, 14.3754],
+    zoom: 2
+});
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(myMap);  
+
+let geojsonLayer = L.geoJSON();
