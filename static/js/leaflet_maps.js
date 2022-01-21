@@ -114,14 +114,11 @@ async function originMap (country_list) {
     const response = await fetch("static/data/countries.geojson"); 
     const data = await response.json();
 
-    //remove geojson data from previous plant
-    geojsonLayer.clearLayers();
+    //remove geojson data from previous plant and closes any open popups
+    geojsonLayer.clearLayers().closePopup();
 
-    //declare border style parameters
-    let myStyle = {
-        color: "black", 
-        fillOpacity: 0
-    };
+    //reset zoom
+    myMap.setView([22.894, 14.025], 2);
 
     //match origin country with geojson country
     for (let index = 0; index < country_list.length; index++) {
@@ -129,7 +126,7 @@ async function originMap (country_list) {
         for(let i=0; i < data.features.length; i++) {
             if (current_country === data.features[i].properties.ADMIN) {
                 //add country geojson to layer and to map
-                geojsonLayer.addData(data.features[i], {style: myStyle}).addTo(myMap);      
+                geojsonLayer.addData(data.features[i]).addTo(myMap);      
             };
         }
     };
@@ -138,7 +135,7 @@ async function originMap (country_list) {
 
 // Create the map object, tile layer, and geojson layer as global variables
 let myMap = L.map("map", {
-    center: [35.9375, 14.3754],
+    center: [22.894, 14.025],
     zoom: 2
 });
 
@@ -146,4 +143,6 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(myMap);  
 
-let geojsonLayer = L.geoJSON();
+let geojsonLayer = L.geoJSON().bindPopup(function (layer) {
+    return layer.feature.properties.ADMIN;
+}).openPopup();
