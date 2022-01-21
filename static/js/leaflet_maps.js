@@ -55,10 +55,56 @@ async function plantChange(plant) {
     document.querySelector('img').setAttribute('src', data.image_url)
     document.querySelector('figcaption').textContent = `Photo of ${data.common_name} from houseplantsexpert.com`
 
+
+    //display the price details along with the plot
+    var price_data = [
+        {
+          domain: { x: [0, 1], y: [0, 1] },
+          value: data.avg_price,
+          number : {prefix: "<b>Avg. Price<br></b>",
+                    font : {size : 14},
+                    valueformat : "$,.2f",
+                    suffix : "<br><b>Price Range</b> $" + data.min_price + "-$" + data.max_price
+        
+        },
+        //   title: { text: "Avg Price Ranges"},
+          type: "indicator",
+          mode: "gauge+number",
+          
+        
+          gauge: {
+            axis: { range: [null, data.max_price*1.5],
+                    tickmode:"auto",
+                    nticks:"10",
+                    tickformat: "$,.2f",
+                    tickangle: "auto",
+                    tickfont: {size: 10}
+            },
+            steps: [
+              { range: [0, data.min_price], color: "white" },
+              { range: [data.min_price, data.max_price], color: "#8FBC8F" }
+            ],
+            threshold: {
+              line: { color: "green", width: 7 },
+              thickness: 1,
+              value: data.avg_price
+            },
+            bar: { color: "white", thickness : 0 },
+            
+            
+          }
+        }
+      ];
+      
+      var layout = { width: 400, height: 300, margin: { t: 0, b: 0 } };
+      Plotly.newPlot('plot', price_data, layout);
+
+
     //convert country string to array of country names to pass to originMap function
     let country_list = (data.origins).split(", ")
     
     originMap(country_list);
+    
 };
 
 
