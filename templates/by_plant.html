@@ -20,6 +20,7 @@
   <link rel="stylesheet" type="text/css" href="../static/css/style.css">
   <!-- prevents favicon.ico error -->
   <link rel="icon" href="data:,">
+  
 </head>
 
 <body>
@@ -49,13 +50,13 @@
           <!-- dropdown fill from js file -->
           <div class="well">
             <h3>Select a plant:</h3>
-            <select id="selDataset" onchange="plantChange(this.value)"></select>
+            <select id="selDataset" onchange="plantChange(this.value)"></select><hr>
           </div>
         </div>
     </div>
         
     <div class="row">
-      <div class='col-md-6'>
+      <div class='col-md-4'>
         <!--text/data panel  -->
         <h4 class="panel-title">Quick Facts</h4>
           <div class="table-responsive">
@@ -86,13 +87,21 @@
           </div>
       </div>  
 
-      <div class="col-md-6">
+      <div class="col-md-4">
         <figure class="figure">
           <!-- photo  -->
           <img src="" class="figure-img img-fluid" alt="featured photo of plant">
           <figcaption class="figure-caption">A caption for the above image.</figcaption>
         </figure>
+             
       </div>
+      
+      <div class="col-md-4">
+        <h4 class="title">Price Range</h4>
+          <p><i><small>provided by www.Etsy.com</small> </i></p>
+          <div id="plot"><!-- Plotly chart will be drawn inside this DIV --></div>
+      </div>
+
     </div>
     
     
@@ -113,7 +122,11 @@
 
     <!-- JavaScript -->
     <script type="text/javascript" src="../static/js/leaflet_maps.js"></script>
-      
+    
+    <!-- Load plotly.js into the DOM -->
+    <script src='https://cdn.plot.ly/plotly-2.8.3.min.js'></script>
+    <!-- <script src="../static/js/etsy.js"></script> -->
+
   </div>
 
 </body>
