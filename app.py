@@ -48,7 +48,10 @@ def by_plant(plant):
         "poisonous": results.poisonous,
         "image_url": results.photo_url,
         "temperatures": results.temperature,
-        "origins": results.origin_countries
+        "origins": results.origin_countries, 
+        "max_price": results.max_plant_price,
+        "avg_price": results.avg_plant_price,  
+        "min_price": results.min_plant_price
         }
 
     return jsonify(dict)
